@@ -1,30 +1,25 @@
+#!/usr/bin/env python3
 import sys, os
-import boto3
-
-def create_instance():
-  ec2 = boto3.resource('ec2')
-  instance = ec2.create_instances(
-      ImageId='ami-acd005d5',
-      MinCount=1,
-      MaxCount=1,
-      InstanceType='t2.micro')
-  print (instance[0].id)
-
+import basic
 
 menu_actions = {}
 
 def main_menu():
   os.system('clear')
+  print('''      __          _______ 
+     /\ \        / / ____|
+    /  \ \  /\  / / (___  
+   / /\ \ \/  \/ / \___ \ 
+  / ____ \  /\  /  ____) |
+ /_/    \_\/  \/  |_____/  ''')
 
-  print("Welcome to an AWS Management System \n")
+  print("\nWelcome to an AWS Management System \n")
   print("Please choose the menu you want to start:")
   print("1. Basic Config")
   print("2. Monitoring Services")
   print("\n0. Quit")
   choice = input(" >>  ")
-
   exec_menu(choice)
-
   return
 
 def exec_menu(choice):
@@ -41,23 +36,50 @@ def exec_menu(choice):
   return
 
 def menu1():
-  print('Basic Config')
+  print('(---------------------)')
+  print('      Basic Config')
+  print('(---------------------)')
   print('1. Create Instance')
-  print('9. Back')
+  print('2. List Instances')
+  print('3. Create Bucket')
+  print('4. List Buckets')
+  print('\n9. Back')
   print('0. Quit')
   choice = input(" >>  ")
   while choice != 0:
     if choice == '1':
-      create_instance()
-  exec_menu(choice)
+      basic.create_instance()
+      break
+    if choice == '2':
+      basic.list_instances()
+      break
+    if choice == '3':
+      basic.create_bucket()
+      break
+    if choice == '4':
+      basic.list_buckets()
+      break
+    if choice == '9':
+      exec_menu(choice)
+    if choice == '0':
+      exec_menu(choice)  
+  menu1()
   return
 
 def menu2():
-  print('Monitoring Services')
-  print('9. Back')
+  print('(---------------------)')
+  print('  Monitoring Services')
+  print('(---------------------)')
+
+  print('\n9. Back')
   print('0. Quit')
   choice = input(" >>  ")
-  exec_menu(choice)
+  while choice != 0:
+    if choice == '9':
+      exec_menu(choice)
+    if choice == '0':
+      exec_menu(choice)
+  menu2
   return
 
 def back():
