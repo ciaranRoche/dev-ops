@@ -80,6 +80,7 @@ def menu2():
   print('(---------------------)')
   print('1. Upload File')
   print('2. Issue Command')
+  print('2, Start an Instance')
 
   print('\n9. Back')
   print('0. Quit')
@@ -90,6 +91,12 @@ def menu2():
       break
     if choice == '2':
       control_scripts.control()
+      break
+    if choice == '3':
+      control_scripts.start_instance()
+      break
+    if choice == '4':
+      control_scripts.stop_instance()
       break
     if choice == '9':
       exec_menu(choice)

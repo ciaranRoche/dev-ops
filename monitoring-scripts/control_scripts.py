@@ -68,9 +68,9 @@ def start_instance():
     print(error)
   
   try:
-    if(instance.state == 'running'):
+    if(instance.state['Name'] == 'running'):
       print('Instance is running so dont even trip dog')
-    elif(instance.state == 'terminated'):
+    elif(instance.state['Name'] == 'terminated'):
       print('Instance can not be started, it is TERMINATED')
     else:
       instance.start()
@@ -78,12 +78,38 @@ def start_instance():
   except Exception as error:
     print('Aww snap, looks like something went wrong')
     print(error)
+    
+def stop_instance():
+  ascii_logos.ec2()
+  ec2 = boto3.resource('ec2')
+  instance_list = []
+  try:
+    for inst in ec2.instances.all():
+      instance_list.append(inst)
+    for i in range (0, len(instance_list)):
+      print(str(i), instance_list[i].id, instance_list[i].state['Name'])
+    print('Please choose the number of the instance you want to start:')
+    choice = input(' >>  ')
+    instance = instance_list[int(choice)]
+  except Exception as error:
+    print('Aww snap, looks like something went wrong, we are trying our best')
+    print(error)
 
-
+  try:
+    if(instance.state['Name'] == 'stopped'):
+      print('Instance is already stopped')
+    elif(instance.state['Name'] == 'terminated'):
+      print('Instance can not be stopped, it is TERMINATED')
+    else:
+      instance.stop()
+      print('Instance is stopping :(')
+  except Exception as error:
+    print('Aww snap, looks like something went wrong')
+    print(error)
     
 
 def main(): 
-  start_instance()
+  stop_instance()
 
 if __name__ == '__main__':
   main()
