@@ -1,22 +1,37 @@
 #!/usr/bin/env python3
 import boto3
 import sys
+import ascii_logos
+import time
 
 def create_instance():
+  ascii_logos.ec2()
   ec2 = boto3.resource('ec2')
   instance = ec2.create_instances(
     ImageId='ami-acd005d5',
       MinCount=1,
       MaxCount=1,
-     InstanceType='t2.micro')
-  print (instance[0].id)
+      KeyName='aws-key',
+      SecurityGroups=['any-ssh-http-https'],
+      InstanceType='t2.micro')
+  print('New instance created')
+  new_instance = instance[0]
+  while(new_instance.state['Name'] == 'pending'):
+    print('Instance state is : %s' % new_instance.state['Name'])
+    time.sleep(5)
+    new_instance.reload()
+  print('Instance state is now : %s' % new_instance.state['Name'])
+  print('Instance public DNS is : %s' % new_instance.public_dns_name)
+
 
 def list_instances():
+  ascii_logos.ec2()
   ec2 = boto3.resource('ec2')
   for instance in ec2.instances.all():
     print ('Instance:', instance.id, 'is now', instance.state['Name'])
 
 def create_bucket():
+  ascii_logos.s3()
   s3 = boto3.resource("s3")
   print('Please enter a globally unique bucket name:')
   bucket_name = input(' >>  ')
@@ -27,6 +42,7 @@ def create_bucket():
     print (error)
 
 def list_buckets():
+  ascii_logos.s3()
   s3 = boto3.resource('s3')
   for bucket in s3.buckets.all():
     print ('Bucket Name: ',bucket.name)
@@ -40,6 +56,7 @@ def list_buckets_no_contents():
     print ('Bucket Name: ',bucket.name)
 
 def delete_buckets():
+  ascii_logos.s3()
   s3 = boto3.resource('s3')
   print('\nList of all Active Buckets:')
   list_buckets_no_contents()
@@ -53,6 +70,7 @@ def delete_buckets():
       print (error)
 
 def delete_contents():
+  ascii_logos.s3()
   s3 = boto3.resource('s3')
   print('\nList of all Active Buckets:')
   list_buckets_no_contents()
@@ -67,6 +85,7 @@ def delete_contents():
       print (error)
 
 def add_bucket():
+  ascii_logos.s3()
   s3 = boto3.resource("s3")
   print('\nList of all Active Buckets:')
   list_buckets_no_contents()

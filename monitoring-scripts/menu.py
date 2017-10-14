@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
 import sys, os
 import basic
+import ascii_logos
 
 menu_actions = {}
 
 def main_menu():
   os.system('clear')
-  print('''      __          _______ 
-     /\ \        / / ____|
-    /  \ \  /\  / / (___  
-   / /\ \ \/  \/ / \___ \ 
-  / ____ \  /\  /  ____) |
- /_/    \_\/  \/  |_____/  ''')
-
-  print("\nWelcome to an AWS Management System \n")
+  ascii_logos.aws()
+  print("Welcome to an AWS Management System \n")
   print("Please choose the menu you want to start:")
   print("1. Basic Config")
   print("2. Monitoring Services")
