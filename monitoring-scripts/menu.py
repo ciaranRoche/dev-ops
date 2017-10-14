@@ -43,6 +43,9 @@ def menu1():
   print('2. List Instances')
   print('3. Create Bucket')
   print('4. List Buckets')
+  print('5. Delete Bucket')
+  print('6. Delete Bucket Contents')
+  print('7. Add Items to Bucket')
   print('\n9. Back')
   print('0. Quit')
   choice = input(" >>  ")
@@ -58,6 +61,15 @@ def menu1():
       break
     if choice == '4':
       basic.list_buckets()
+      break
+    if choice == '5':
+      basic.delete_buckets()
+      break
+    if choice == '6':
+      basic.delete_contents()
+      break
+    if choice == '7':
+      basic.add_bucket()
       break
     if choice == '9':
       exec_menu(choice)
