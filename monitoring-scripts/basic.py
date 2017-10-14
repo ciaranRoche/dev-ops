@@ -27,31 +27,37 @@ service nginx start'''
   else:
     user_data = ''
 
-  ascii_logos.ec2()
-  ec2 = boto3.resource('ec2')
-  instance = ec2.create_instances(
-    ImageId='ami-acd005d5',
-      MinCount=1,
-      MaxCount=1,
-      KeyName=key,
-      SecurityGroups=[group],
-      UserData=user_data,
-      InstanceType='t2.micro')
-  print('New instance created')
-  new_instance = instance[0]
-  while(new_instance.state['Name'] == 'pending'):
-    print('Instance state is : %s' % new_instance.state['Name'])
-    time.sleep(5)
-    new_instance.reload()
-  print('Instance state is now : %s' % new_instance.state['Name'])
-  print('Instance public DNS is : %s' % new_instance.public_dns_name)
+  try:
+    ascii_logos.ec2()
+    ec2 = boto3.resource('ec2')
+    instance = ec2.create_instances(
+      ImageId='ami-acd005d5',
+        MinCount=1,
+        MaxCount=1,
+        KeyName=key,
+        SecurityGroups=[group],
+        UserData=user_data,
+        InstanceType='t2.micro')
+    print('New instance created')
+    new_instance = instance[0]
+    while(new_instance.state['Name'] == 'pending'):
+      print('Instance state is : %s' % new_instance.state['Name'])
+      time.sleep(5)
+      new_instance.reload()
+    print('Instance state is now : %s' % new_instance.state['Name'])
+    print('Instance public DNS is : %s' % new_instance.public_dns_name)
+  except Exception as error:
+    print('Aww snap, something went wrong')
+    print(error)
 
 
 def list_instances():
   ascii_logos.ec2()
   ec2 = boto3.resource('ec2')
+  print('  Instance Id              Status          Public IPv4')
+  print('(------------------------------------------------------)')
   for instance in ec2.instances.all():
-    print ('Instance:', instance.id, 'is now', instance.state['Name'])
+    print (instance.id,'  -  ', instance.state['Name'],'  -  ',  instance.public_ip_address)
 
 def create_bucket():
   ascii_logos.s3()
@@ -62,6 +68,7 @@ def create_bucket():
     response = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': 'eu-west-1'})
     print (response)
   except Exception as error:
+    print('Aww snap, something went wrong')
     print (error)
 
 def list_buckets():
