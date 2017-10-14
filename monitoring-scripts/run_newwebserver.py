@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-import sys
-import subprocess
-import boto3
-
 import menu
 
 def main():

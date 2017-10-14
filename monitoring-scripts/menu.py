@@ -2,6 +2,7 @@
 import sys, os
 import basic
 import ascii_logos
+import control_scripts
 
 menu_actions = {}
 
@@ -11,7 +12,7 @@ def main_menu():
   print("Welcome to an AWS Management System \n")
   print("Please choose the menu you want to start:")
   print("1. Basic Config")
-  print("2. Monitoring Services")
+  print("2. Advanced Config/Monitoring")
   print("\n0. Quit")
   choice = input(" >>  ")
   exec_menu(choice)
@@ -75,13 +76,21 @@ def menu1():
 
 def menu2():
   print('(---------------------)')
-  print('  Monitoring Services')
+  print('   Advanced Config')
   print('(---------------------)')
+  print('1. Upload File')
+  print('2. Issue Command')
 
   print('\n9. Back')
   print('0. Quit')
   choice = input(" >>  ")
   while choice != 0:
+    if choice == '1':
+      control_scripts.upload()
+      break
+    if choice == '2':
+      control_scripts.control()
+      break
     if choice == '9':
       exec_menu(choice)
     if choice == '0':

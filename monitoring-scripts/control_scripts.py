@@ -3,9 +3,9 @@ import boto3
 import sys
 import ascii_logos
 import subprocess
+import run_newwebserver
 
 def upload():
-
   ascii_logos.ec2()
   print("Please enter key:")
   key = input(' >>  ')
@@ -19,10 +19,15 @@ def upload():
 
   try:
     (status, output) = subprocess.getstatusoutput(command)
+    if(status > 0):
+      print('Aww snap, looks like something went wrong, please ensure details are correct.')
+    else:
+      print('File uploaded :)')
   except Exception as error:
     print('Aww snap something went wrong :(')
     print(error)
   return (status, output)
+
 
 def control():
   ascii_logos.ec2()
@@ -37,8 +42,12 @@ def control():
   
   try:
     (status, output) = subprocess.getstatusoutput(command)
-    print(output)
+    if(status > 0):
+      print('Aww snap, looks like something went wrong, please ensure details are correct.')
+    else:
+      print(output)
   except Exception as error:
     print('Aww snap something went wrong :(')
     print(error)
+
 

@@ -31,10 +31,8 @@ def check():
     print('Nginx server is online')
     close_nginx()
 
-
 def main():
   check()
-
 
 if __name__ == '__main__':
   main()
