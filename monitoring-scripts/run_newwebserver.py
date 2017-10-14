@@ -5,7 +5,6 @@ import boto3
 
 import menu
 
-
 def main():
   menu.main_menu()
 

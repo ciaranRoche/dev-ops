@@ -70,6 +70,7 @@ def list_instances():
     print('Aww snap, something went wrong')
     print(error)
 
+
 def create_bucket():
   ascii_logos.s3()
   s3 = boto3.resource("s3")
@@ -82,6 +83,7 @@ def create_bucket():
     print('Aww snap, something went wrong')
     print (error)
 
+
 def list_buckets():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
@@ -91,10 +93,12 @@ def list_buckets():
     for item in bucket.objects.all():
         print ("\t%s" % item.key)
   
+
 def list_buckets_no_contents():
   s3 = boto3.resource('s3')
   for bucket in s3.buckets.all():
     print ('Bucket Name: ',bucket.name)
+
 
 def delete_buckets():
   ascii_logos.s3()
@@ -110,6 +114,7 @@ def delete_buckets():
   except Exception as error:
       print (error)
 
+
 def delete_contents():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
@@ -124,6 +129,7 @@ def delete_contents():
       print (response)
     except Exception as error:
       print (error)
+
 
 def add_bucket():
   ascii_logos.s3()
