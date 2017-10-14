@@ -5,6 +5,10 @@ import ascii_logos
 import time
 
 def create_instance():
+  print('''Please enter new instance name:''')
+  name = input(' >>  ')
+  tag = {"Key": "Name", "Value": name}
+
   print('''Please enter the name of the key you want to use:
 Hit enter to default key - "aws-key"''')
   key = input(' >>  ')
@@ -37,7 +41,10 @@ service nginx start'''
         KeyName=key,
         SecurityGroups=[group],
         UserData=user_data,
-        InstanceType='t2.micro')
+        InstanceType='t2.micro',
+        TagSpecifications=[{'ResourceType': 'instance',
+                        'Tags': [tag]}]
+        )
     print('New instance created')
     new_instance = instance[0]
     while(new_instance.state['Name'] == 'pending'):
@@ -52,12 +59,16 @@ service nginx start'''
 
 
 def list_instances():
-  ascii_logos.ec2()
-  ec2 = boto3.resource('ec2')
-  print('  Instance Id              Status          Public IPv4')
-  print('(------------------------------------------------------)')
-  for instance in ec2.instances.all():
-    print (instance.id,'  -  ', instance.state['Name'],'  -  ',  instance.public_ip_address)
+  try:
+    ascii_logos.ec2()
+    ec2 = boto3.resource('ec2')
+    print('  Instance Id              Status          Public IPv4')
+    print('(------------------------------------------------------)')
+    for instance in ec2.instances.all():
+      print (instance.id,'  -  ', instance.state['Name'],'  -  ',  instance.public_ip_address,)
+  except:
+    print('Aww snap, something went wrong')
+    print(error)
 
 def create_bucket():
   ascii_logos.s3()
