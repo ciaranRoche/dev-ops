@@ -5,14 +5,37 @@ import ascii_logos
 import time
 
 def create_instance():
+  print('''Please enter the name of the key you want to use:
+Hit enter to default key - "aws-key"''')
+  key = input(' >>  ')
+  if(key==''):
+    key = 'aws-key'
+
+  print('''Please enter the name of the security group you want to use:
+Hit enter to default group - "any-ssh-http-https"''')
+  group = input(' >>  ')
+  if(group==''):
+    group = 'any-ssh-http-https'
+
+  print('Would you like instance to be launched with nginx: (y/n)') 
+  data = input(' >>  ')
+  if(data=='y'):
+    user_data = '''#!/bin/bash
+yum -y update 
+yum -y install nginx 
+service nginx start'''
+  else:
+    user_data = ''
+
   ascii_logos.ec2()
   ec2 = boto3.resource('ec2')
   instance = ec2.create_instances(
     ImageId='ami-acd005d5',
       MinCount=1,
       MaxCount=1,
-      KeyName='aws-key',
-      SecurityGroups=['any-ssh-http-https'],
+      KeyName=key,
+      SecurityGroups=[group],
+      UserData=user_data,
       InstanceType='t2.micro')
   print('New instance created')
   new_instance = instance[0]
