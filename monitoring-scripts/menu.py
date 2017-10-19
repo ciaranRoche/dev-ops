@@ -69,9 +69,9 @@ def menu2():
     print('(---------------------)')
     print('1. Upload File')
     print('2. Issue Command')
-    print('3, Start an Instance')
-    print('4, Stop an Instance')
-    print('5, Terminate Instance')
+    print('3. Start an Instance')
+    print('4. Stop an Instance')
+    print('5. Terminate Instance')
 
     print('\n9. Back')
     print('0. Quit')

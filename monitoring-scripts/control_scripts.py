@@ -56,8 +56,10 @@ def pick_instance():
     try:
         for inst in ec2.instances.all():
             instance_list.append(inst)
+        print('  Number        Instance Id         Instance State')
+        print('(------------------------------------------------------)')
         for i in range (0, len(instance_list)):
-            print(str(i), instance_list[i].id, instance_list[i].state['Name'])
+            print('    ',str(i), ' - ' , instance_list[i].id,' - ', instance_list[i].state['Name'])
         print('Please choose the number of the instance:')
         choice = input(' >>  ')
         instance = instance_list[int(choice)]
@@ -106,7 +108,6 @@ def terminate_instance():
     except Exception as error:
         print('Aww snap, looks like something went wrong')
         print(error)
-
 
 def main():
     terminate_instance()

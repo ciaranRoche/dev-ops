@@ -1,38 +1,28 @@
 #!/usr/bin/python3
-import subprocess
+
+"""A tiny Python program to check that nginx is running.
+Try running this program from the command line like this:
+  python3 check_webserver.py
+"""
+
 import sys
+import subprocess
 
-cmd = 'ps -A | grep nginx'
-(status, output) = subprocess.getstatusoutput(cmd)
+def checknginx():
+    cmd = 'ps -A | grep nginx | grep -v grep'
 
-def start_nginx():
-  print('Would you like to turn on nginx server? (y/n)')
-  choice = input(' >>  ')
-  if(choice == 'y'):
-    print('nginx is firing up')
-    subprocess.run(["sudo","service","nginx","start"])
-  else:
-    sys.exit(0)
-  
-def close_nginx():
-  print('Would you like to shut down nginx server? (y/n)')
-  choice = input(' >>  ')
-  if(choice == 'y'):
-    print('nginx if shutting down')
-    subprocess.run(["sudo","service","nginx","stop"])
-  else:
-    sys.exit(0)
+    (status, output) = subprocess.getstatusoutput(cmd)
 
-def check():
-  if(status > 0):
-    print('Nginx server is offline')
-    start_nginx()
-  else:
-    print('Nginx server is online')
-    close_nginx()
+    if status > 0:  
+        print("Nginx Server IS NOT running")
+    else:
+        print("Nginx Server IS running")
 
+# Define a main() function.
 def main():
-  check()
-
+    checknginx()
+      
+# This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
   main()
+
