@@ -27,87 +27,68 @@ def exec_menu(choice):
     try:
       menu_actions[ch]()
     except KeyError:
-      print("Invalid selection, please try again. \n")
+      print('Aww snap! Invalid selection made, try again. \n')
       menu_actions['main_menu']()
   return
 
 def menu1():
-  print('(---------------------)')
-  print('      Basic Config')
-  print('(---------------------)')
-  print('1. Create Instance')
-  print('2. List Instances')
-  print('3. Create Bucket')
-  print('4. List Buckets')
-  print('5. Delete Bucket')
-  print('6. Delete Bucket Contents')
-  print('7. Add Items to Bucket')
-  print('\n9. Back')
-  print('0. Quit')
-  choice = input(" >>  ")
-  while choice != 0:
-    if choice == '1':
-      basic.create_instance()
-      break
-    if choice == '2':
-      basic.list_instances()
-      break
-    if choice == '3':
-      basic.create_bucket()
-      break
-    if choice == '4':
-      basic.list_buckets()
-      break
-    if choice == '5':
-      basic.delete_buckets()
-      break
-    if choice == '6':
-      basic.delete_contents()
-      break
-    if choice == '7':
-      basic.add_bucket()
-      break
-    if choice == '9':
-      exec_menu(choice)
-    if choice == '0':
-      exec_menu(choice)  
-  menu1()
+  while True:
+    print('(---------------------)')
+    print('      Basic Config')
+    print('(---------------------)')
+    print('1. Create Instance')
+    print('2. List Instances')
+    print('3. Create Bucket')
+    print('4. List Buckets')
+    print('5. Delete Bucket')
+    print('6. Delete Bucket Contents')
+    print('7. Add Items to Bucket')
+    print('\n9. Back')
+    print('0. Quit')
+    choice = input(" >>  ")
+    menu1_exec(choice)
+
+
+def menu1_exec(choice):
+  os.system('clear')
+  ch = choice.lower()
+  if ch == '':
+    menu1_actions['menu1']()
+  else:
+    try:
+      menu1_actions[ch]()
+    except KeyError:
+      print('Aww snap, invalid selection, please try again. \n')
+      menu1_actions['menu1']()
   return
 
 def menu2():
-  print('(---------------------)')
-  print('   Advanced Config')
-  print('(---------------------)')
-  print('1. Upload File')
-  print('2. Issue Command')
-  print('3, Start an Instance')
-  print('4, Stop an Instance')
-  print('5, Terminate Instance')
+  while True:
+    print('(---------------------)')
+    print('   Advanced Config')
+    print('(---------------------)')
+    print('1. Upload File')
+    print('2. Issue Command')
+    print('3, Start an Instance')
+    print('4, Stop an Instance')
+    print('5, Terminate Instance')
 
-  print('\n9. Back')
-  print('0. Quit')
-  choice = input(" >>  ")
-  while choice != 0:
-    if choice == '1':
-      control_scripts.upload()
-      break
-    if choice == '2':
-      control_scripts.control()
-      break
-    if choice == '3':
-      control_scripts.start_instance()
-      break
-    if choice == '4':
-      control_scripts.stop_instance()
-      break
-    if choice == '5':
-      control_scripts.terminate_instance()
-      break
-    if choice == '9':
-      exec_menu(choice)
-    if choice == '0':
-      exec_menu(choice)
-  menu2
+    print('\n9. Back')
+    print('0. Quit')
+    choice = input(" >>  ")
+    menu2_exec(choice)
+
+def menu2_exec(choice):
+  os.system('clear')
+  ch = choice.lower()
+  if ch == '':
+    menu2_actions['main_menu']()
+  else:
+    try:
+      menu2_actions[ch]()
+    except KeyError:
+      print('Aww snap, invalid selection, please try again. \n')
+      menu2_actions['menu2']()
   return
 
 def back():
@@ -117,6 +98,30 @@ def exit():
   print('Killing all Processess....')
   sys.exit()
 
+menu2_actions = {
+  'menu2' : menu2,
+  '1': control_scripts.upload,
+  '2': control_scripts.control,
+  '3': control_scripts.start_instance,
+  '4': control_scripts.stop_instance,
+  '5': control_scripts.terminate_instance,
+  '9': back,
+  '0': exit,
+}
+
+menu1_actions = {
+  'menu1' : menu1,
+  '1': basic.create_instance,
+  '2': basic.list_instances,
+  '3': basic.create_bucket,
+  '4': basic.list_buckets,
+  '5': basic.delete_buckets,
+  '6': basic.delete_contents,
+  '7': basic.add_bucket,
+  '9': back,
+  '0': exit,
+}
+
 menu_actions = {
   'main_menu' : main_menu,
   '1' : menu1,
@@ -124,4 +129,3 @@ menu_actions = {
   '9' : back,
   '0' : exit,
 }
-
