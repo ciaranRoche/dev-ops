@@ -28,8 +28,6 @@ def upload():
         print(error)
     return (status, output)
 
-#echo $?
-
 def control():
     ascii_logos.ec2()
     print("Please enter key:")
