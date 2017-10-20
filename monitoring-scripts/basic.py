@@ -21,12 +21,15 @@ Hit enter to default group - "any-ssh-http-https"''')
   if(group==''):
     group = 'any-ssh-http-https'
 
-  print('Would you like instance to be launched with nginx: (y/n)') 
-  data = input(' >>  ')
+  data = None
+  while(data != 'y' and data != 'n'):
+    print('Would you like instance to be launched with nginx: (y/n)') 
+    data = input(' >>  ')
   if(data=='y'):
     user_data = '''#!/bin/bash
 yum -y update 
-yum -y install nginx 
+yum -y install nginx
+yum -y install python35 
 service nginx start'''
   else:
     user_data = ''
@@ -45,7 +48,7 @@ service nginx start'''
         TagSpecifications=[{'ResourceType': 'instance',
                         'Tags': [tag]}]
         )
-    print('New instance created')
+    print('Woohoo looks like your new instance has been created!\n Please hold till your instance is fully running...')
     new_instance = instance[0]
     while(new_instance.state['Name'] == 'pending'):
       print('Instance state is : %s' % new_instance.state['Name'])
@@ -78,7 +81,7 @@ def create_bucket():
   bucket_name = input(' >>  ')
   try:
     response = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': 'eu-west-1'})
-    print (response)
+    print ('Congrats, new bucket created:\n', response)
   except Exception as error:
     print('Aww snap, something went wrong')
     print (error)
@@ -87,17 +90,25 @@ def create_bucket():
 def list_buckets():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
-  for bucket in s3.buckets.all():
-    print ('Bucket Name: ',bucket.name)
-    print ("---")
-    for item in bucket.objects.all():
-        print ("\t%s" % item.key)
+  try:
+    for bucket in s3.buckets.all():
+      print ('Bucket Name: ',bucket.name)
+      print ("---Items---")
+      for item in bucket.objects.all():
+          print ("\t%s" % item.key)
+  except Exception as error:
+    print('Aww snap, something went wrong')
+    print (error)
   
 
 def list_buckets_no_contents():
   s3 = boto3.resource('s3')
-  for bucket in s3.buckets.all():
-    print ('Bucket Name: ',bucket.name)
+  try:
+    for bucket in s3.buckets.all():
+      print ('Bucket Name: ',bucket.name)
+  except Exception as error:
+    print('Aww snap, something went wrong')
+    print(error)
 
 
 def delete_buckets():
@@ -110,9 +121,10 @@ def delete_buckets():
   bucket = s3.Bucket(bucket_name)
   try:
       response = bucket.delete()
-      print (response)
+      print ('Bucket is no more\n',response)
   except Exception as error:
-      print (error)
+    print('Aww snap, something went wrong')
+    print (error)
 
 
 def delete_contents():
@@ -126,8 +138,9 @@ def delete_contents():
   for key in bucket.objects.all():
     try:
       response = key.delete()
-      print (response)
+      print ('And the contents are not more\n',response)
     except Exception as error:
+      print('Aww snap, something went wrong')
       print (error)
 
 
@@ -141,7 +154,7 @@ def add_bucket():
   print('\nPlease enter name of file you want to add to bucket ',bucket_name,' :')
   object_name = input(' >>  ')
   try:
-      response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'))
+      response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
       print (response)
   except Exception as error:
       print (error)

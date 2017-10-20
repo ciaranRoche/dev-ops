@@ -6,16 +6,15 @@ import subprocess
 import run_newwebserver
 
 def upload():
-    ascii_logos.ec2()
+    instance = pick_instance()
     print("Please enter key:")
     key = input(' >>  ')
     print("Please enter file you wish to upload:")
     file = input(' >>  ')
-    print("Please enter public iPv4 of instance:")
-    ip = input(' >>  ')
     print("Please enter directory where you want file to be placed:")
     direc = input(' >>  ')
-    command = 'scp -i ' + key + ' ' + file + ' ' + 'ec2-user@' + ip + ':' + direc
+    command = 'scp -i ' + key + ' ' + file + ' ' + 'ec2-user@' + instance.public_ip_address + ':' + direc
+    print(command)
 
     try:
         (status, output) = subprocess.getstatusoutput(command)
@@ -29,22 +28,18 @@ def upload():
     return (status, output)
 
 def control():
-    ascii_logos.ec2()
+    instance = pick_instance()
     print("Please enter key:")
     key = input(' >>  ')
-    print("Please enter public iPv4 of instance:")
-    ip = input(' >>  ')
     print("Please enter command you want to issue:")
     cmd = input(' >>  ')
-
-    command = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + ip + ' "' + cmd + '"'
-
+    command = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + instance.public_ip_address + ' "' + cmd + '"'
     try:
         (status, output) = subprocess.getstatusoutput(command)
         if(status > 0):
             print('Aww snap, looks like something went wrong, please ensure details are correct.')
         else:
-            print(output)
+            print('Everything looks good. \n',output)
     except Exception as error:
         print('Aww snap something went wrong :(')
         print(error)
@@ -53,6 +48,7 @@ def pick_instance():
     ascii_logos.ec2()
     ec2 = boto3.resource('ec2')
     instance_list = []
+    print('Gathering a list of Instances for you to choose from....')
     try:
         for inst in ec2.instances.all():
             instance_list.append(inst)
