@@ -3,6 +3,7 @@ import sys, os
 import basic
 import ascii_logos
 import control_scripts
+import new_web_server
 
 menu_actions = {}
 
@@ -73,6 +74,7 @@ def menu2():
     print('4. Start an Instance')
     print('5. Stop an Instance')
     print('6. Terminate Instance')
+    print('7. \n Automated Preset Instance')
 
     print('\n9. Back')
     print('0. Quit')
@@ -107,6 +109,7 @@ menu2_actions = {
   '4': control_scripts.start_instance,
   '5': control_scripts.stop_instance,
   '6': control_scripts.terminate_instance,
+  '7': new_web_server.automated_run,
   '9': back,
   '0': exit,
 }
