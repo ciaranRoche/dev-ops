@@ -27,6 +27,28 @@ def upload():
         print(error)
     return (status, output)
 
+def uploadFolder():
+    instance = pick_instance()
+    print("Please enter key:")
+    key = input(' >>  ')
+    print("Please enter file you wish to upload:")
+    file = input(' >>  ')
+    print("Please enter directory where you want file to be placed:")
+    direc = input(' >>  ')
+    command = 'scp -i ' + key + ' -r ' + file + ' ' + 'ec2-user@' + instance.public_ip_address + ':' + direc
+    print(command)
+
+    try:
+        (status, output) = subprocess.getstatusoutput(command)
+        if(status > 0):
+            print('Aww snap, looks like something went wrong, please ensure details are correct.')
+        else:
+            print('File uploaded :)')
+    except Exception as error:
+        print('Aww snap something went wrong :(')
+        print(error)
+    return (status, output)
+
 def control():
     instance = pick_instance()
     print("Please enter key:")

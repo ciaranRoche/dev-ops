@@ -154,7 +154,8 @@ def add_bucket():
   print('\nPlease enter name of file you want to add to bucket ',bucket_name,' :')
   object_name = input(' >>  ')
   try:
-      response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
-      print (response)
+    response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
+    print (response)
   except Exception as error:
-      print (error)
+    print('Aww snap, something went wrong')
+    print (error)

@@ -67,11 +67,12 @@ def menu2():
     print('(---------------------)')
     print('   Advanced Config')
     print('(---------------------)')
-    print('1. Upload File')
-    print('2. Issue Command')
-    print('3. Start an Instance')
-    print('4. Stop an Instance')
-    print('5. Terminate Instance')
+    print('1. Upload File to Ec2 Instance')
+    print('2. Upload Folder to Ec2 Instance')
+    print('3. Issue Command')
+    print('4. Start an Instance')
+    print('5. Stop an Instance')
+    print('6. Terminate Instance')
 
     print('\n9. Back')
     print('0. Quit')
@@ -101,10 +102,11 @@ def exit():
 menu2_actions = {
   'menu2' : menu2,
   '1': control_scripts.upload,
-  '2': control_scripts.control,
-  '3': control_scripts.start_instance,
-  '4': control_scripts.stop_instance,
-  '5': control_scripts.terminate_instance,
+  '2': control_scripts.uploadFolder,
+  '3': control_scripts.control,
+  '4': control_scripts.start_instance,
+  '5': control_scripts.stop_instance,
+  '6': control_scripts.terminate_instance,
   '9': back,
   '0': exit,
 }
