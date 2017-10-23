@@ -4,6 +4,7 @@ import sys
 import ascii_logos
 import subprocess
 import run_newwebserver
+import webbrowser
 
 def upload():
     instance = pick_instance()
@@ -125,6 +126,15 @@ def terminate_instance():
             print('Instance is been TERMINATED - hasta la vista baby!')
     except Exception as error:
         print('Aww snap, looks like something went wrong')
+        print(error)
+
+def visit_website():
+    instance = pick_instance()
+    try :
+        dns = instance.public_dns_name
+        webbrowser.open("http://" + dns, new=0, autoraise=True)
+    except Exception as error:
+        print("Aww snap, looks like something went wrong")
         print(error)
 
 def main():
