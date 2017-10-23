@@ -132,7 +132,7 @@ def visit_website():
     instance = pick_instance()
     try :
         dns = instance.public_dns_name
-        webbrowser.open("http://" + dns, new=0, autoraise=True)
+        webbrowser.open("http://" + dns)
     except Exception as error:
         print("Aww snap, looks like something went wrong")
         print(error)
