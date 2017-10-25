@@ -130,7 +130,9 @@ def exit():
 menu3_actions = {
   'menu3' : menu3,
   '1' : cloud_watch_setup.setup,
-  '2' : cloud_watch_setup.checkStats
+  '2' : cloud_watch_setup.checkStats,
+  '9' : back,
+  '0' : exit,
 }
 
 menu2_actions = {

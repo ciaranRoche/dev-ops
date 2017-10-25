@@ -155,7 +155,7 @@ def add_bucket():
   object_name = input(' >>  ')
   try:
     response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
-    print (response)
+    print ('Looks like everything is where it is meant to be \n',response)
   except Exception as error:
     print('Aww snap, something went wrong')
     print (error)
