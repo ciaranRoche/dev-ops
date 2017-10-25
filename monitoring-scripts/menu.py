@@ -100,6 +100,7 @@ def menu3():
     print('  Cloud Watch Client')
     print('(---------------------)')
     print('1. Cloud Watch Setup')
+    print('2. Get Instance Stats')
 
     print('\n9. Back')
     print('0. Quit')
@@ -128,7 +129,8 @@ def exit():
 
 menu3_actions = {
   'menu3' : menu3,
-  '1' : cloud_watch_setup.setup
+  '1' : cloud_watch_setup.setup,
+  '2' : cloud_watch_setup.checkStats
 }
 
 menu2_actions = {

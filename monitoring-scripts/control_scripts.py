@@ -20,7 +20,7 @@ def upload():
     try:
         (status, output) = subprocess.getstatusoutput(command)
         if(status > 0):
-            print('Aww snap, looks like something went wrong, please ensure details are correct.')
+            print('Aww snap, looks like something went wrong, please ensure details are correct.\n', output)
         else:
             print('File uploaded :)')
     except Exception as error:
@@ -42,7 +42,7 @@ def uploadFolder():
     try:
         (status, output) = subprocess.getstatusoutput(command)
         if(status > 0):
-            print('Aww snap, looks like something went wrong, please ensure details are correct.')
+            print('Aww snap, looks like something went wrong, please ensure details are correct.\n', output)
         else:
             print('File uploaded :)')
     except Exception as error:
@@ -60,7 +60,7 @@ def control():
     try:
         (status, output) = subprocess.getstatusoutput(command)
         if(status > 0):
-            print('Aww snap, looks like something went wrong, please ensure details are correct.')
+            print('Aww snap, looks like something went wrong, please ensure details are correct.\n', output)
         else:
             print('Everything looks good. \n',output)
     except Exception as error:
@@ -136,9 +136,3 @@ def visit_website():
     except Exception as error:
         print("Aww snap, looks like something went wrong")
         print(error)
-
-def main():
-    terminate_instance()
-
-if __name__ == '__main__':
-    main()
