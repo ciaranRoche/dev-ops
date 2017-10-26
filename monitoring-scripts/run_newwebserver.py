@@ -1,3 +1,6 @@
+
+#Kicks off application
+
 #!/usr/bin/python3
 import menu
 

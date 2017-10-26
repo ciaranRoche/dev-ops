@@ -1,3 +1,6 @@
+
+# Basic menu system for command line application
+
 #!/usr/bin/env python3
 import sys, os
 import basic
@@ -7,6 +10,7 @@ import cloud_watch_setup
 
 menu_actions = {}
 
+#renders main menu
 def main_menu():
   os.system('clear')
   ascii_logos.aws()
@@ -17,22 +21,28 @@ def main_menu():
   print("3. Cloud Watch Client")
   print("\n0. Quit")
   choice = input(" >>  ")
+  #choice sent to exec_menu to be checked
   exec_menu(choice)
   return
 
+#checks user choice
 def exec_menu(choice):
+  #clears terminal screen
   os.system('clear')
   ch = choice.lower()
+  #if choice is blank call main menu again
   if ch == '':
     menu_actions['main_menu']()
   else:
     try:
+      # try and see if choice is in menu_actions
       menu_actions[ch]()
     except KeyError:
       print('Aww snap! Invalid selection made, try again. \n')
       menu_actions['main_menu']()
   return
 
+#renders menu1
 def menu1():
   while True:
     print('(---------------------)')
@@ -50,6 +60,7 @@ def menu1():
     choice = input(" >>  ")
     menu1_exec(choice)
 
+#menu logic, checks user choice
 def menu1_exec(choice):
   os.system('clear')
   ch = choice.lower()
@@ -63,6 +74,7 @@ def menu1_exec(choice):
       menu1_actions['menu1']()
   return
 
+#renders menu2
 def menu2():
   while True:
     print('(---------------------)')
@@ -81,6 +93,7 @@ def menu2():
     choice = input(" >>  ")
     menu2_exec(choice)
 
+#checks menu2 choice
 def menu2_exec(choice):
   os.system('clear')
   ch = choice.lower()
@@ -94,6 +107,7 @@ def menu2_exec(choice):
       menu2_actions['menu2']()
   return
 
+#renders menu3
 def menu3():
   while True:
     print('(---------------------)')
@@ -108,6 +122,7 @@ def menu3():
     choice = input(" >>  ")
     menu3_exec(choice)
 
+#checks menu3 choice
 def menu3_exec(choice):
   os.system('clear')
   ch = choice.lower()
@@ -121,13 +136,16 @@ def menu3_exec(choice):
       menu3_actions['menu3']()
   return
 
+#function to call main-menu
 def back():
   menu_actions['main_menu']()
 
+#ends application
 def exit():
   print('Killing all Processess....')
   sys.exit()
 
+#key value pairs for menu 3
 menu3_actions = {
   'menu3' : menu3,
   '1' : cloud_watch_setup.setup,
@@ -137,6 +155,7 @@ menu3_actions = {
   '0' : exit,
 }
 
+#ley value pairs for menu 2
 menu2_actions = {
   'menu2' : menu2,
   '1': control_scripts.upload,
@@ -150,6 +169,7 @@ menu2_actions = {
   '0': exit,
 }
 
+#key value pairs for menu1
 menu1_actions = {
   'menu1' : menu1,
   '1': basic.create_instance,
@@ -163,6 +183,7 @@ menu1_actions = {
   '0': exit,
 }
 
+#key value pairs for main menu
 menu_actions = {
   'main_menu' : main_menu,
   '1' : menu1,

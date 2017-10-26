@@ -1,3 +1,7 @@
+
+#Small file for rendering ascii logos for the aws command line app
+
+
 def ec2():
   print('')
   print('''        __|   __| _  ) 

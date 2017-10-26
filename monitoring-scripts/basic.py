@@ -1,3 +1,6 @@
+
+# Group of basic functions, using boto3 to setup instances and s3 buckets
+
 #!/usr/bin/env python3
 import boto3
 import sys
@@ -5,6 +8,7 @@ import ascii_logos
 import time
 import webbrowser
 
+# Creates a new instance in ec2, prompts user for details to customise set up
 def create_instance():
   print('''Please enter new instance name:''')
   name = input(' >>  ')
@@ -22,6 +26,7 @@ Hit enter to default group - "any-ssh-http-https"''')
   if(group==''):
     group = 'any-ssh-http-https'
 
+  #Adds user data if the user wishes, which installs nginx, python35 and starts the nginx server
   data = None
   while(data != 'y' and data != 'n'):
     print('Would you like instance to be launched with nginx: (y/n)') 
@@ -35,6 +40,7 @@ service nginx start'''
   else:
     user_data = ''
 
+  # Main logic using boto3 to create instance
   try:
     ascii_logos.ec2()
     ec2 = boto3.resource('ec2')
@@ -51,6 +57,7 @@ service nginx start'''
         )
     print('Woohoo looks like your new instance has been created!\n Please hold till your instance is fully running...')
     new_instance = instance[0]
+    # While loop, outputs status, loop breaks when status is finished pending
     while(new_instance.state['Name'] == 'pending'):
       print('Instance state is : %s' % new_instance.state['Name'])
       time.sleep(5)
@@ -62,6 +69,7 @@ service nginx start'''
     print(error)
 
 
+#Returns a list of instances, including their state and public ipv4 address
 def list_instances():
   try:
     ascii_logos.ec2()
@@ -75,6 +83,7 @@ def list_instances():
     print(error)
 
 
+#Creates a bucket in s3, prompts user for a bucket name
 def create_bucket():
   ascii_logos.s3()
   s3 = boto3.resource("s3")
@@ -87,7 +96,7 @@ def create_bucket():
     print('Aww snap, something went wrong')
     print (error)
 
-
+# Returns a list of buckets including items in the bucket
 def list_buckets():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
@@ -101,7 +110,8 @@ def list_buckets():
     print('Aww snap, something went wrong')
     print (error)
   
-
+# Returns list of buckets but does not return the items, used in other functions to show user available buckets
+# TODO : change to an array list and prompt user to select a bucket and return bucket for use in other functions
 def list_buckets_no_contents():
   s3 = boto3.resource('s3')
   try:
@@ -111,7 +121,7 @@ def list_buckets_no_contents():
     print('Aww snap, something went wrong')
     print(error)
 
-
+#Function to delete bucket, prompts user to enter bucket name
 def delete_buckets():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
@@ -127,7 +137,7 @@ def delete_buckets():
     print('Aww snap, something went wrong')
     print (error)
 
-
+#Deletes content from buckets
 def delete_contents():
   ascii_logos.s3()
   s3 = boto3.resource('s3')
@@ -144,7 +154,7 @@ def delete_contents():
       print('Aww snap, something went wrong')
       print (error)
 
-
+#Adds items to bucket, user prompted to enter details
 def add_bucket():
   ascii_logos.s3()
   s3 = boto3.resource("s3")
@@ -154,16 +164,20 @@ def add_bucket():
   bucket_name = input(' >>  ')
   print('\nPlease enter name of file you want to add to bucket ',bucket_name,' :')
   object_name = input(' >>  ')
+  #main logic using boto, acl = 'puplic-read', makes added item public
   try:
     response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
     print ('Looks like everything is where it is meant to be \n',response)
+    ans = None
+    #Gives user option to view item in browser
+    while (ans != 'y' and ans != 'n'):
+      print('\nWould you like to view file? (y/n)')
+      ans = input(' >>  ')
+      if(ans == 'y'):
+        webbrowser.open('https://s3-eu-west-1.amazonaws.com/' + bucket_name + '/' + object_name, new=0, autoraise=True)
+      elif(ans == 'n'):
+        return
   except Exception as error:
     print('Aww snap, something went wrong')
     print (error)
 
-def view_item():
-  webbrowser.open('https://s3-eu-west-1.amazonaws.com/ciaransbucketofawesome/pied.jpg')
-
-
-if __name__ == '__main__':
-  view_item()

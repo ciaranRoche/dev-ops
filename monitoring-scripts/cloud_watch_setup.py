@@ -1,3 +1,7 @@
+
+#Sets up basic cloud watch client on an instance
+#TODO: Add create user type to help with setting client
+
 import boto3
 import sys
 import subprocess
@@ -5,9 +9,11 @@ import run_newwebserver
 import webbrowser
 import control_scripts
 
+#Creates client on an instance
 def setup():
     print('Welcome to Cloud Watch Client Setup')
     print('Ensure you have access keys for a user with on Cloud Watch privileges')
+    #Shows list of instance, user promted to select one
     instance = control_scripts.pick_instance()
     print('''Please enter the name of the key associated with that instance:
 Hit enter to default key - "aws-key.pem"''')
@@ -24,6 +30,7 @@ Please enter your access key''')
 
     print('Ok, now we have everything we need we are just going to set up the client for you, we will walk you through the process...')
 
+    #Installs nessasary packages to instance
     install_client = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + instance.public_ip_address + ' "sudo yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https -y"'
     try:
         (status, output) = subprocess.getstatusoutput(install_client)
@@ -35,6 +42,7 @@ Please enter your access key''')
         print('Aww snap something went wrong :(')
         print(error)
 
+    #Uses curl to pull in a zip file of cloud watch client
     move_client = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + instance.public_ip_address + ' "curl http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip -O"'
     try:
         (status, output) = subprocess.getstatusoutput(move_client)
@@ -46,6 +54,7 @@ Please enter your access key''')
         print('Aww snap something went wrong :(')
         print(error)
 
+    #Unzips the client, and removes the zip file
     unzip = '''unzip CloudWatchMonitoringScripts-1.2.1.zip
 rm CloudWatchMonitoringScripts-1.2.1.zip'''
     unzip_client = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + instance.public_ip_address + ' "' + unzip + '"'
@@ -59,6 +68,7 @@ rm CloudWatchMonitoringScripts-1.2.1.zip'''
         print('Aww snap something went wrong :(')
         print(error)
 
+    #Pipes in the access keys a conf file
     pipe = '''echo "AWSAccessKeyId=%(access)s" >> awscreds.conf
 echo "AWSSecretKey=%(secret)s" >> awscreds.conf
 cp awscreds.conf ./aws-scripts-mon/
@@ -74,6 +84,7 @@ rm awscreds.conf''' % {'access' : access_key, 'secret' : secret_key}
         print('Aww snap something went wrong :(')
         print(error)
 
+    #Finally verifies everything works, and cloud watch client is ready to go
     verify = 'ssh -t -i ' + key + ' ' + 'ec2-user@' + instance.public_ip_address + ' "./aws-scripts-mon/mon-put-instance-data.pl --mem-util --verify --verbose"'
     success = 'Verification completed successfully'
     try:
@@ -87,6 +98,7 @@ rm awscreds.conf''' % {'access' : access_key, 'secret' : secret_key}
         print('Aww snap something went wrong :(')
         print(error)
 
+#Prompts user to enter time in hours, and returns stats for the previous n time hours
 def checkStats():
     instance = control_scripts.pick_instance()
     print('Please enter key associated with this instance: (Hit enter to default to "aws-key.pem")')
@@ -106,6 +118,7 @@ def checkStats():
         print('Aww snap something went wrong :(')
         print(error)
 
+#Sets cron on instance to return check information every 5 minutes on the instance, basic set up config
 def setCron():
     instance = control_scripts.pick_instance()
     print('Please enter key associated with this instance: (Hit enter to default to "aws-key.pem")')
