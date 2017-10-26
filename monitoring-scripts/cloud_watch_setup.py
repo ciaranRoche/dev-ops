@@ -7,6 +7,7 @@ import control_scripts
 
 def setup():
     print('Welcome to Cloud Watch Client Setup')
+    print('Ensure you have access keys for a user with on Cloud Watch privileges')
     instance = control_scripts.pick_instance()
     print('''Please enter the name of the key associated with that instance:
 Hit enter to default key - "aws-key.pem"''')
@@ -101,7 +102,25 @@ def checkStats():
           print('Aww snap, looks like something went wrong\n', output)
         else:
           print(output)
-        print(output)
     except Exception as error:
         print('Aww snap something went wrong :(')
+        print(error)
+
+def setCron():
+    instance = control_scripts.pick_instance()
+    print('Please enter key associated with this instance: (Hit enter to default to "aws-key.pem")')
+    key = input(' >>  ')
+    if(key == ''):
+      key = 'aws-key.pem'
+    command = 'ssh -t -i ' + key + ' ec2-user@' + instance.public_ip_address + ' " ~/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron "'
+    try: 
+        print('Please wait while we configure and set the cron schedule for you :)')
+        (status, output) = subprocess.getstatusoutput(command)
+        if (status > 0):
+            print('Aww snap, looking like something went wrong\n', output)
+        else:
+            print(output)
+            print('Everything looks good, you can now check the AWS console for monitoring stats on your instance')
+    except Exception as error:
+        print('Aww snap something went wrong')
         print(error)

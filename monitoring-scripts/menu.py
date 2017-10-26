@@ -101,6 +101,7 @@ def menu3():
     print('(---------------------)')
     print('1. Cloud Watch Setup')
     print('2. Get Instance Stats')
+    print('3. Set Cron - 5 Minute Checks')
 
     print('\n9. Back')
     print('0. Quit')
@@ -131,6 +132,7 @@ menu3_actions = {
   'menu3' : menu3,
   '1' : cloud_watch_setup.setup,
   '2' : cloud_watch_setup.checkStats,
+  '3' : cloud_watch_setup.setCron,
   '9' : back,
   '0' : exit,
 }

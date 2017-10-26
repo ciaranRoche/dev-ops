@@ -3,6 +3,7 @@ import boto3
 import sys
 import ascii_logos
 import time
+import webbrowser
 
 def create_instance():
   print('''Please enter new instance name:''')
@@ -159,3 +160,10 @@ def add_bucket():
   except Exception as error:
     print('Aww snap, something went wrong')
     print (error)
+
+def view_item():
+  webbrowser.open('https://s3-eu-west-1.amazonaws.com/ciaransbucketofawesome/pied.jpg')
+
+
+if __name__ == '__main__':
+  view_item()
