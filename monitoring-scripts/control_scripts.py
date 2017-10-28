@@ -20,8 +20,6 @@ def upload():
     print("Please enter directory where you want file to be placed:")
     direc = input(' >>  ')
     command = 'scp -i ' + key + ' ' + file + ' ' + 'ec2-user@' + instance.public_ip_address + ':' + direc
-    print(command)
-
     try:
         (status, output) = subprocess.getstatusoutput(command)
         if(status > 0):
