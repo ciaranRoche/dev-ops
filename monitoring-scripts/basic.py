@@ -165,11 +165,12 @@ def add_bucket():
     print('\nPlease enter name of file you want to add to bucket ',bucket_name,' :')
     object_name = input(' >>  ')
     #main logic using boto, acl = 'puplic-read', makes added item public
-    html_link = 'echo ','<img src="https://s3-eu-west-1.amazonaws.com/' + bucket_name + '/' + object_name + '"/>',' > index.html'
+    link = '\\"https://s3-eu-west-1.amazonaws.com/' + bucket_name + '/' + object_name + '\\"'
+    html_link = 'echo "<img src=' + link + '/>" > index.html'
     try:
         response = s3.Object(bucket_name, object_name).put(Body=open(object_name, 'rb'), ACL='public-read')
-        print ('Looks like everything is where it is meant to be \n',response)
-        (status, output) = subprocess.getstatusoutput(html_link)
+        print ('Looks like everything is where it is meant to be \n')
+        subprocess.Popen(html_link, shell=True, stdout=subprocess.PIPE)
         ans = None
         #Gives user option to view item in browser
         while (ans != 'y' and ans != 'n'):
